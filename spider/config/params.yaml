@@ -1,0 +1,6 @@
+params:
+- mode: debug
+  broker_url: amqp://guest:guest@10.33.1.37:5672/
+  mysql_url: mysql+pymysql://root:sd-9898w@10.10.39.3:3306/parker?charset=utf8mb4
+  download_path: /home/liuruoyu/Desktop/xunlei/parker
+  statsd_address: 127.0.0.1:8125

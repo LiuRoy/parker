@@ -1,0 +1,9 @@
+sites:
+- name: youku-1
+  url: http://tech.youku.com/game
+  task: spider.parse.youku
+  minute: 60
+- name: youku-2
+  url: http://tech.youku.com/pc
+  task: spider.parse.youku
+  minute: 60

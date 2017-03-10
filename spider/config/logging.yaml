@@ -1,0 +1,36 @@
+version: 1
+disable_existing_loggers: no
+
+formatters:
+  simple:
+    format: '%(asctime)s [%(levelname)s] [%(process)d] %(filename)s-%(lineno)d: %(message)s'
+  detail:
+    format: '%(asctime)s [%(levelname)s] [%(process)d] %(pathname)s-%(lineno)d: %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: detail
+    stream: ext://sys.stdout
+  files:
+    class: logging.handlers.WatchedFileHandler
+    level: DEBUG
+    formatter: simple
+    filename: /home/liuruoyu/Desktop/xunlei/parker/worker.log
+
+loggers:
+  parker.debug:
+    level: DEBUG
+    handlers: [console]
+    propagate: no
+    qualname: parker.debug
+  parker.release:
+    level: INFO
+    handlers: [files]
+    propagate: no
+    qualname: parker.release
+
+root:
+  level: DEBUG
+  handlers: [console]
