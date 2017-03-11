@@ -1,32 +1,22 @@
 # -*- coding: utf-8 -*-
 """一些公用结构体"""
+import hashlib
 from collections import namedtuple
-import requests
-from requests.exceptions import RequestException
-
-from spider.config.conf import (
-    statsd_client,
-    logger,
-)
 
 
-VideoInfo = namedtuple(
-    'VideoInfo', [
-        'publisher',        # string 发布人名称
+WebVideo = namedtuple(
+    'WebVideo', [
         'source',           # string 网站类型
         'task_id',          # int    定时任务id
-        'comment_count',    # int    评论个数
-        'star_count',       # int    点赞个数
-        'play_count',       # int    播放次数
         'img_url',          # string 图片链接
         'duration',         # int    播放时长
         'title',            # string 视频标题
-        'publish_date',     # int    发布日期
-        'video_url'         # string 视频链接
+        'video_url',        # string 视频链接
+        'video_url_md5',    # string 视频链接md值
     ])
 
-VideoFormat = namedtuple(
-    'VideoFormat', [
+VideoInfo = namedtuple(
+    'VideoInfo', [
         'video_id',        # int Videos记录id
         'video_url',       # string 播放url
         'format',          # string 视频格式
@@ -49,26 +39,32 @@ def parse_task(task_name):
     return source, int(task_id)
 
 
-def http_get(url, headers=None, timeout=None):
-    """HTTP GET方式获取页面
+def parse_video_time(v_time):
+    """解析视频时长
 
     Args:
-        url (string): 链接
-        headers (dict): 请求头
-        timeout (float): 超时时间
+        v_time (string): 视频时长 格式: 4:50:89 01:29
     Returns:
-        content (string): 页面内容
+        int 视频时长秒数
     """
-    try:
-        response = requests.get(url, headers=headers, timeout=timeout)
-        if response.ok:
-            logger.info('request url success. url: {}'.format(url))
-            statsd_client.incr('request.get.suc')
-            return response.content
-        else:
-            logger.warning('request url warning. url: {}'.format(url))
-            statsd_client.incr('request.get.warn')
-    except RequestException as e:
-        logger.error('request url failure. url: {}'.format(url))
-        logger.exception(e)
-        statsd_client.incr('request.get.exc')
+    items = v_time.split(':')
+    if len(items) == 2:
+        return int(items[0]) * 60 + int(items[1])
+
+    if len(items) == 3:
+        return int(items[0]) * 3600 + int(items[1]) * 60 + int(items[2])
+
+    return 0
+
+
+def get_md5(content):
+    """计算md5
+
+    Args:
+        content (string): 要计算md5的字符串
+    Returns:
+        string: 计算好的md5值
+    """
+    md5 = hashlib.md5()
+    md5.update(content.encode('utf-8'))
+    return md5.hexdigest()

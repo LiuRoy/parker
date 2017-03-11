@@ -6,8 +6,8 @@ import yaml
 import subprocess
 
 from spider.config.conf import params
-from spider.tools.common import VideoFormat
-from spider.models.videos import Format
+from spider.tools.common import VideoInfo
+from spider.models.videos import Information
 from spider.config.conf import (
     logger,
     statsd_client,
@@ -54,7 +54,7 @@ def get_video_info(play_url, video_id):
             video_info = yaml.load(f)
             default_format = video_info['streams'][0]
 
-            video_format = VideoFormat(
+            video_format = VideoInfo(
                 video_id=video_id,
                 video_url=play_url,
                 format=default_format['format'],

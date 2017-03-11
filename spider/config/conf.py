@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""解析sites.yaml"""
+"""解析配置文件"""
 import os
 import yaml
 import logging

@@ -1,6 +1,7 @@
 params:
 - mode: debug
-  broker_url: amqp://guest:guest@10.33.1.37:5672/
-  mysql_url: mysql+pymysql://root:sd-9898w@10.10.39.3:3306/parker?charset=utf8mb4
-  download_path: /home/liuruoyu/Desktop/xunlei/parker
-  statsd_address: 127.0.0.1:8125
+  broker_url: redis://192.168.99.100:6379/1
+  mysql_url: mysql+pymysql://root:root@192.168.99.100:3306/parker?charset=utf8mb4
+  download_path: C:\Users\lrysj\Desktop\parker
+  statsd_address: 192.168.99.100:8125
+  video_number_per_page: 5

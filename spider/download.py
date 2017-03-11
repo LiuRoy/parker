@@ -4,7 +4,7 @@ from spider import app
 
 
 @app.task
-def youku(video):
+def bilibili(video):
     """根据优酷播放地址下载视频
 
     Args:
