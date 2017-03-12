@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 """用you-get库下载视频"""
-import os
 import re
-import yaml
 import subprocess
 
 from spider.config.conf import params
 from spider.tools.common import VideoInfo
-from spider.models.videos import Information
+from spider.models.videos import DownloadInfo
 from spider.config.conf import (
     logger,
     statsd_client,
@@ -36,42 +34,31 @@ def get_video_info(play_url, video_id):
         video_id (int): 视频id
     """
     try:
-        info_cmd = "you-get -i '{}'".format(play_url)
-        output_info = os.path.join(params['download_path'],
-                                   '{}.yaml'.format(video_id))
-        p = subprocess.Popen(info_cmd, shell=True, stdout=subprocess.PIPE)
+        p = subprocess.Popen(['you-get', '-i', play_url],
+                             shell=True, stdout=subprocess.PIPE)
+        p.wait()
         content = p.stdout.read()
-        content = content.replace(
-            b'    [ DEFAULT ] _________________________________\n', b'')
-        content = content.replace(b'\x1b[7m', b'')
-        content = content.replace(b'\x1b[0m', b'')
-        content = content.replace(b'\x1b[4m', b'')
+        content = content.decode('utf-8')   # power shell下要设置为gbk
 
-        with open(output_info, 'w') as f:
-            f.write(content.decode('utf-8'))
+        video_title = re.search(r'Title:\s+(.*?)\s+Type:', content).group(1)
+        video_size = int(re.search(r'\((\d+) Bytes\)', content).group(1))
 
-        with open(output_info, 'r') as f:
-            video_info = yaml.load(f)
-            default_format = video_info['streams'][0]
-
-            video_format = VideoInfo(
-                video_id=video_id,
-                video_url=play_url,
-                format=default_format['format'],
-                container=default_format['container'],
-                profile=default_format['video-profile'],
-                size=parse_size(default_format['size'])
-            )
+        video_format = VideoInfo(
+            video_id=video_id,
+            video_url=play_url,
+            title=video_title,
+            size=video_size,
+        )
     except Exception as exc:
-        statsd_client.incr('youku.youget.info.exc')
+        statsd_client.incr('youget.info.exc')
         logger.error('you-get info failure: url:{} video:{}'.format(
             play_url, video_id))
         logger.error(exc)
     else:
-        statsd_client.incr('youku.youget.info.suc')
+        statsd_client.incr('youget.info.suc')
         logger.info('you-get info success: url:{} video:{}'.format(
             play_url, video_id))
-        #Format.add(video_format)
+        DownloadInfo.add(video_format)
         return video_format
 
 
@@ -82,18 +69,21 @@ def download_video(video_format):
         video_format (VideoFormat): 视频下载信息
     """
     try:
-        output_file = os.path.join(params['download_path'],
-                                   '{}.{}'.format(video_format.video_id,
-                                                  video_format.container))
-        cmd = "you-get -O {} '{}'".format(output_file, video_format.video_url)
-        subprocess.call(cmd, shell=True)
+        p = subprocess.Popen(['you-get', video_format.video_url],
+                             shell=True, cwd=params['download_path'])
+        p.wait(3600) # 不考虑特别大的视频
     except Exception as exc:
-        statsd_client.incr('youku.youget.download.exc')
+        statsd_client.incr('youget.download.exc')
         logger.error('you-get download failure: url:{} video:{}'.format(
             video_format.video_url, video_format.video_id))
         logger.exception(exc)
     else:
-        statsd_client.incr('youku.youget.download.suc')
+        statsd_client.incr('youget.download.suc')
         logger.info('you-get download success: url:{} video:{}'.format(
             video_format.video_url, video_format.video_id))
-        #Format.update_status(video_format.video_id)
+        DownloadInfo.update_status(video_format.video_id)
+
+if __name__ == '__main__':
+    a = get_video_info('http://www.bilibili.com/video/av8620614/', 5)
+    print(a)
+    download_video(a)

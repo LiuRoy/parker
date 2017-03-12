@@ -1,19 +1,17 @@
 CREATE SCHEMA `parker` DEFAULT CHARACTER SET utf8mb4 ;
 
-CREATE TABLE `format` (
+CREATE TABLE `download_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `video_id` int(11) NOT NULL COMMENT '视频id',
   `video_url` varchar(200) NOT NULL COMMENT '播放url',
-  `format` varchar(10) NOT NULL COMMENT '视频编码格式',
-  `container` varchar(10) NOT NULL COMMENT 'flv/avi/mp4',
-  `profile` varchar(10) NOT NULL COMMENT '1080P/高清',
-  `size` int(11) NOT NULL DEFAULT '0' COMMENT '视频大小',
+  `video_title` varchar(200) NOT NULL COMMENT '视频标题',
+  `video_size` int(11) NOT NULL DEFAULT '0' COMMENT '视频大小',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否下载完成 1下载完成 0未下载',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `ix_video_id` (`video_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频格式表'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='视频下载信息表';
 
 CREATE TABLE `web_video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,4 +25,4 @@ CREATE TABLE `web_video` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `ix_video_url_md5` (`video_url_md5`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='网站视频信息'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='网站视频信息';

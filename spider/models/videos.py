@@ -74,36 +74,32 @@ class Videos(BaseModel):
         return records
 
 
-class Information(BaseModel):
+class DownloadInfo(BaseModel):
 
-    __tablename__ = 'video_info'
+    __tablename__ = 'download_info'
 
     id = Column(Integer, primary_key=True)
     video_id = Column(Integer, nullable=False)
     video_url = Column(String(200), nullable=False)
-    format_ = Column(String(10), nullable=False)
-    container = Column(String(10), nullable=False)
-    profile = Column(String(10), nullable=False)
-    size = Column(Integer, nullable=False, default=0)
+    video_title = Column(String(200), nullable=False)
+    video_size = Column(Integer, nullable=False)
     status = Column(SmallInteger, nullable=False, default=0)
     created_at = Column(DateTime, nullable=False, default=datetime.datetime.now)
     updated_at = Column(DateTime, nullable=False, default=datetime.datetime.now,
                         onupdate=datetime.datetime.now)
 
     @classmethod
-    def add(cls, video_format):
+    def add(cls, video_info):
         """添加记录
 
         Args:
-            video_format (VideoFormat): 格式信息
+            video_info (VideoInfo): 格式信息
         """
         record = cls(
-            video_id=video_format.video_id,
-            video_url=video_format.video_url,
-            format_=video_format.format,
-            container=video_format.container,
-            profile=video_format.profile,
-            size=video_format.size
+            video_id=video_info.video_id,
+            video_url=video_info.video_url,
+            video_title=video_info.title,
+            video_size=video_info.size,
         )
         session = DBSession()
         session.add(record)

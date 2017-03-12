@@ -19,9 +19,7 @@ VideoInfo = namedtuple(
     'VideoInfo', [
         'video_id',        # int Videos记录id
         'video_url',       # string 播放url
-        'format',          # string 视频格式
-        'container',       # string flv/mp4/avi
-        'profile',         # string 1080P/高清/标清
+        'title',           # string 视频标题
         'size',            # int 视频大小
     ])
 
