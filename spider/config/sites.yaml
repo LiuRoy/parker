@@ -2,8 +2,8 @@ sites:
 - name: bilibili-1
   url: http://space.bilibili.com/21474566/#!/video         # 超级镜子
   task: spider.parse.bilibili
-  minute: 1
+  minute: 10
 - name: miaopai-2
   url: http://m.miaopai.com/v2_index/u/paike_5no3e2iw6g    # 陈翔六点半
   task: spider.parse.miaopai
-  minute: 1
+  minute: 10
