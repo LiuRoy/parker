@@ -1,5 +1,5 @@
 params:
-- mode: debug
+- mode: release
   broker_url: amqp://guest:guest@192.168.99.100:5672/parker
   mysql_url: mysql+pymysql://root:root@192.168.99.100:3306/parker?charset=utf8mb4
   download_path: /home/liuruoyu/Desktop/github/parker
