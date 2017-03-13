@@ -1,25 +1,37 @@
 # -*- coding: utf-8 -*-
 """解析页面任务"""
 from spider import app
+from spider import download
+from spider.tools.task import ParkerTask
+from spider.extract import (
+    bilibili,
+    miaopai
+)
 
 
-@app.task
-def bilibili(url, name):
+@app.task(base=ParkerTask, bind=True)
+def bilibili(self, url, name):
     """抓取哔哩哔哩 解析获取最新视频地址
 
     Args:
         url (string): 哔哩哔哩页面地址
         name (string): 定时任务名称
     """
-    pass
+    new_videos = bilibili.extract_videos(url, name)
+    if new_videos:
+        for video in new_videos:
+            download.bilibili(video)
 
 
-@app.task
-def meipai(url, name):
-    """抓取美拍页面 解析获取最新视频地址
+@app.task(base=ParkerTask, bind=True)
+def miaopai(self, url, name):
+    """抓取秒拍页面 解析获取最新视频地址
 
     Args:
         url (string): 美拍页面地址
         name (string): 定时任务名称
     """
-    pass
+    new_videos = miaopai.extract_videos(url, name)
+    if new_videos:
+        for video in new_videos:
+            download.miaopai(video)

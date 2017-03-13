@@ -82,8 +82,3 @@ def download_video(video_format):
         logger.info('you-get download success: url:{} video:{}'.format(
             video_format.video_url, video_format.video_id))
         DownloadInfo.update_status(video_format.video_id)
-
-if __name__ == '__main__':
-    a = get_video_info('http://www.bilibili.com/video/av8620614/', 5)
-    print(a)
-    download_video(a)

@@ -17,7 +17,7 @@ handlers:
     class: logging.handlers.WatchedFileHandler
     level: DEBUG
     formatter: simple
-    filename: C:\Users\lrysj\Desktop\parker\worker.log
+    filename: C:\temp\worker.log
 
 loggers:
   parker.debug:

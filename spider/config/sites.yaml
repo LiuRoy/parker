@@ -1,13 +1,13 @@
 sites:
 - name: bilibili-1
-  url: http://space.bilibili.com/79415852/#!/video         # 办公室小野
+  url: http://space.bilibili.com/79415852/#!/video
   task: spider.parse.bilibili
   minute: 60
 - name: bilibili-2
-  url: http://space.bilibili.com/212230/#!/video           # 八尾妖姬
+  url: http://space.bilibili.com/212230/#!/video
   task: spider.parse.bilibili
   minute: 120
 - name: meipai-3
-  url: http://m.miaopai.com/v2_index/u/paike_5no3e2iw6g    # 陈翔六点半
+  url: http://m.miaopai.com/v2_index/u/paike_5no3e2iw6g
   task: spider.parse.meipai
   minute: 30
