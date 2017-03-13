@@ -3,10 +3,7 @@
 from spider import app
 from spider import download
 from spider.tools.task import ParkerTask
-from spider.extract import (
-    bilibili,
-    miaopai
-)
+from spider import extract
 
 
 @app.task(base=ParkerTask, bind=True)
@@ -17,10 +14,10 @@ def bilibili(self, url, name):
         url (string): 哔哩哔哩页面地址
         name (string): 定时任务名称
     """
-    new_videos = bilibili.extract_videos(url, name)
+    new_videos = extract.bilibili.extract_videos(url, name)
     if new_videos:
         for video in new_videos:
-            download.bilibili(video)
+            download.bilibili.delay(video)
 
 
 @app.task(base=ParkerTask, bind=True)
@@ -31,7 +28,7 @@ def miaopai(self, url, name):
         url (string): 美拍页面地址
         name (string): 定时任务名称
     """
-    new_videos = miaopai.extract_videos(url, name)
+    new_videos = extract.miaopai.extract_videos(url, name)
     if new_videos:
         for video in new_videos:
-            download.miaopai(video)
+            download.miaopai.delay(video)

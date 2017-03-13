@@ -2,6 +2,7 @@ params:
 - mode: debug
   broker_url: amqp://guest:guest@192.168.99.100:5672/parker
   mysql_url: mysql+pymysql://root:root@192.168.99.100:3306/parker?charset=utf8mb4
-  download_path: C:\temp
+  download_path: /home/liuruoyu/Desktop/github/parker
   statsd_address: 192.168.99.100:8125
   video_number_per_page: 5
+  download_timeout: 3600

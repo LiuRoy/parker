@@ -95,4 +95,5 @@ def extract_videos(url, name):
         statsd_client.incr('miaopai.extract.suc')
         logger.info('request success. name:{}'.format(name))
         new_videos = Videos.filter_exist(videos)
-        return Videos.batch_add(new_videos)
+        Videos.batch_add(new_videos)
+        return new_videos

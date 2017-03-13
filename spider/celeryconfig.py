@@ -16,3 +16,6 @@ CELERY_IMPORTS = (
 )
 
 CELERYBEAT_SCHEDULE = load_sites()
+
+CELERY_TASK_SERIALIZER = "pickle"
+CELERY_ACCEPT_CONTENT = ['pickle', 'json']

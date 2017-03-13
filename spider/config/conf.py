@@ -25,7 +25,7 @@ def load_sites():
         return {x['name']: {
             'task': x['task'],
             'schedule': timedelta(minutes=int(x['minute'])),
-            'args': (x['url'], )
+            'args': (x['url'], x['name'])
         } for x in sites['sites']}
 
 
