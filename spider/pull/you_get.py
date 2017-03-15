@@ -74,6 +74,8 @@ def download_video(video_info):
         p = subprocess.Popen(download_comd,
                              shell=True, cwd=params['download_path'])
         p.wait(int(params['download_timeout']))
+        if p.returncode != 0:
+            raise Exception("download failed")
     except Exception as exc:
         statsd_client.incr('youget.download.exc')
         logger.error('you-get download failure: url:{} video:{}'.format(
