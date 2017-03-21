@@ -8,8 +8,8 @@ from spider.pull.you_get import (
 )
 
 
-@app.task(base=ParkerTask, bind=True)
-def bilibili(self, video):
+@app.task(base=ParkerTask)
+def bilibili(video):
     """根据bilibili播放地址下载视频
 
     Args:
@@ -19,8 +19,8 @@ def bilibili(self, video):
     download_video(video_info)
 
 
-@app.task(base=ParkerTask, bind=True)
-def miaopai(self, video):
+@app.task(base=ParkerTask)
+def miaopai(video):
     """根据miaopai播放地址下载视频
 
     Args:

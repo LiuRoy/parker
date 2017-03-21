@@ -6,8 +6,8 @@ from spider.tools.task import ParkerTask
 from spider import extract
 
 
-@app.task(base=ParkerTask, bind=True)
-def bilibili(self, url, name):
+@app.task(base=ParkerTask)
+def bilibili(url, name):
     """抓取哔哩哔哩 解析获取最新视频地址
 
     Args:
@@ -20,8 +20,8 @@ def bilibili(self, url, name):
             download.bilibili.delay(video)
 
 
-@app.task(base=ParkerTask, bind=True)
-def miaopai(self, url, name):
+@app.task(base=ParkerTask)
+def miaopai(url, name):
     """抓取秒拍页面 解析获取最新视频地址
 
     Args:
